@@ -19,8 +19,8 @@ describe("Post", () => {
         Post.create({
           title: "My first visit to Proxima Centauri b",
           body: "I saw some rocks.",
-
           topicId: this.topic.id
+
         })
         .then((post) => {
           this.post = post;
@@ -65,14 +65,11 @@ describe("Post", () => {
       // and set the expectations there
 
        done();
-
       })
       .catch((err) => {
- 
         expect(err.message).toContain("Post.body cannot be null");
         expect(err.message).toContain("Post.topicId cannot be null");
         done();
- 
       })
     });  
   });
@@ -80,22 +77,19 @@ describe("Post", () => {
   describe("#setTopic()", () => {
 
     it("should associate a topic and a post together", (done) => {
-// #1
+
       Topic.create({
         title: "Challenges of interstellar travel",
         description: "1. The Wi-Fi is terrible"
       })
       .then((newTopic) => {
+        expect(this.post.topicId).toBe(this.topic.id);//confirm old post belongs to old topic, confirm beforeEach.
 
-// #2
-        expect(this.post.topicId).toBe(this.topic.id);
-// #3
-        this.post.setTopic(newTopic)
+        this.post.setTopic(newTopic)//set relationship between old post and new topic
         .then((post) => {
-// #4
+
           expect(post.topicId).toBe(newTopic.id);
           done();
-
         });
       })
     });

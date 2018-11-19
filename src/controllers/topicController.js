@@ -31,11 +31,11 @@ module.exports = {
 	},
 
 	show(req, res, next){
-			 topicQueries.getTopic(req.params.id, (err, topic) => {		
+			 topicQueries.getTopic(req.params.id, (err, topic) => {		//callback from queries.topic and db
 			   if(err || topic == null){
 				 res.redirect(404, "/");
 			   } else {
-				 res.render("topics/show", {topic});
+				 res.render("topics/show", {topic}); //topic is form queries.topic (line 41 from queries)
 			   }
 			 });
 		   },

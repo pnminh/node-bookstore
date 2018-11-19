@@ -1,4 +1,5 @@
 const Topic = require("./models").Topic;
+const Post = require("./models").Post;
 
 module.exports = {
 
@@ -30,14 +31,20 @@ module.exports = {
   },
 
   getTopic(id, callback){
-    return Topic.findById(id)
+    return Topic.findById(id, { //use 'include' to get all associated posts
+      include: [{
+        model: Post,
+        as: "posts"
+      }]
+    })
     .then((topic) => {
-      callback(null, topic);
+      callback(null, topic); //topic has all related posts
     })
     .catch((err) => {
       callback(err);
     })
   },
+  
 
   deleteTopic(id, callback){
     return Topic.destroy({

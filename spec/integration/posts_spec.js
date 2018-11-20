@@ -77,7 +77,32 @@ describe("routes : posts", () => {
            });
          });
      });
+
+    it("should not create a new post that fails validations", (done) => {
+      const options = {
+        url: `${base}/${this.topic.id}/posts/create`,
+        form: {
+          title: "a",
+          body: "b"
+        }
+      };
+      request.post(options,
+        (err, res, body) => {
+          Post.findOne({where: {title: "a"}})
+          .then((post) => {
+              expect(post).toBeNull();
+              done();
+          })
+          .catch((err) => {
+            console.log(err);
+            done();
+          });
+        }
+      );
+    });
+
   });
+  
 
   describe("GET /topics/:topicId/posts/:id", () => {
 
@@ -92,12 +117,10 @@ describe("routes : posts", () => {
 
 
   describe("POST /topics/:topicId/posts/:id/destroy", () => {
-    it("should delete the post with the associated ID", (done) => {
-//#1
-      expect(this.post.id).toBe(1);
 
+    it("should delete the post with the associated ID", (done) => {
+      expect(this.post.id).toBe(1);
       request.post(`${base}/${this.topic.id}/posts/${this.post.id}/destroy`, (err, res, body) => {
-//#2
         Post.findById(1)
         .then((post) => {
           expect(err).toBeNull();
@@ -140,7 +163,8 @@ describe("routes : posts", () => {
         const options = {
           url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
           form: {
-            title: "Snowman Building Competition"
+            title: "Snowman Building Competition",
+            body: "I love watching them melt so slowly."
           }
         };
         request.post(options,
@@ -158,6 +182,8 @@ describe("routes : posts", () => {
         });
     });
   });
+
+
 
 
 

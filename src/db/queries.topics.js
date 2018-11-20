@@ -1,14 +1,12 @@
 const Topic = require("./models").Topic;
 const Post = require("./models").Post;
+const Flair = require("./models").Flair;
 
 module.exports = {
 
-//call from controller
   getAllTopics(callback){
     return Topic.all()
 
-//Inside, it calls the callback method passed into getAllTopics with null and the topics that
-// came from the database. 
     .then((topics) => {
       callback(null, topics);
     })
@@ -16,6 +14,29 @@ module.exports = {
       callback(err);
     })
   },
+
+
+  getTopic(id, callback){
+    return Topic.findById(id, {
+      include: [
+      {
+        model: Post,
+        as: "posts"
+      },
+      {
+        model: Flair,
+        as:"flairs"
+      }
+    ]
+    })
+    .then((topic) => {
+      callback(null, topic);
+    })
+    .catch((err) => {
+      callback(err);
+    })
+  },
+
 
   addTopic(newTopic, callback){
     return Topic.create({
@@ -30,21 +51,6 @@ module.exports = {
     })
   },
 
-  getTopic(id, callback){
-    return Topic.findById(id, { //use 'include' to get all associated posts
-      include: [{
-        model: Post,
-        as: "posts"
-      }]
-    })
-    .then((topic) => {
-      callback(null, topic); //topic has all related posts
-    })
-    .catch((err) => {
-      callback(err);
-    })
-  },
-  
 
   deleteTopic(id, callback){
     return Topic.destroy({
@@ -77,7 +83,6 @@ module.exports = {
     });
   }
 
-  
+
 
 }
-

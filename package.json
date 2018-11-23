@@ -5,7 +5,8 @@
   "main": "src/server.js",
   "scripts": {
     "test": "set NODE_ENV=test&&jasmine",
-    "start": "nodemon src/server.js"
+    "start": "npm src/server.js",
+    "start-local": "nodemon src/server.js"
   },
   "author": "",
   "license": "ISC",

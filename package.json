@@ -4,14 +4,15 @@
   "description": "A Reddit-like application for users to discuss and share content",
   "main": "src/server.js",
   "scripts": {
-    "test": "test NODE_ENV=test && jasmine",
-    "start": "node src/server.js"
+    "test": "set NODE_ENV=test&&jasmine",
+    "start": "nodemon src/server.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "faker": "^4.1.0",
     "jasmine": "^3.0.0",
+    "nodemon": "^1.18.6",
     "request": "^2.83.0"
   },
   "dependencies": {

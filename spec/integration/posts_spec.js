@@ -5,38 +5,66 @@ const base = "http://localhost:3000/topics";
 const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
 const Post = require("../../src/db/models").Post;
+const User = require("../../src/db/models").User;
 
 describe("routes : posts", () => {
-  console.log(`env node: ${process.env.NODE_ENV}`);
+ 
   beforeEach((done) => {
     this.topic;
     this.post;
+    this.user;
 
     sequelize.sync({force: true}).then((res) => {
-//#1
-      Topic.create({
-        title: "Winter Games",
-        description: "Post your Winter Games stories."
+      User.create({
+        email: "starman@tesla.com",
+        password: "Trekkie4lyfe"
       })
-      .then((topic) => {
-        this.topic = topic;
+      .then((user) => {
+        this.user = user;
 
-        Post.create({
-          title: "Snowball Fighting",
-          body: "So much snow!",
-          topicId: this.topic.id
+        Topic.create({
+          title: "Winter Games",
+          description: "Post your Winter Games stories.",
+          posts: [{
+            title: "Snowball Fighting",
+            body: "So much snow!",
+            userId: this.user.id
+          }]
+        }, {
+          include: {
+           model: Post,
+           as: "posts"
+          }
         })
-        .then((post) => {
-          this.post = post;
+        .then((topic) => {
+          this.topic = topic;
+          this.post = topic.posts[0];
           done();
         })
-        .catch((err) => {
-          console.log(err);
-          done();
-        });
-      });
+      })
     });
   });
+  beforeEach((done) => {
+    User.create({
+      email: "member@example.com",
+      password: "123456",
+      role: "member"
+    })
+    .then((user) => {
+      request.get({         // mock authentication
+        url: "http://localhost:3000/auth/fake",
+        form: {
+          role: user.role,     // mock authenticate as admin user
+          userId: user.id,
+          email: user.email
+        }
+      },
+        (err, res, body) => {
+          done();
+        }
+      );
+    });
+  });                      
 
   describe("GET /topics/:topicId/posts/new", () => {
 
@@ -62,8 +90,7 @@ describe("routes : posts", () => {
          } };
        request.post(options,
          (err, res, body) => {
- 
-           Post.findOne({where: {title: "Watching snow melt"}})
+          Post.findOne({where: {title: "Watching snow melt"}})
            .then((post) => {
              expect(post).not.toBeNull();
              expect(post.title).toBe("Watching snow melt");

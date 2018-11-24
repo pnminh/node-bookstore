@@ -135,7 +135,7 @@ describe("guest attempting to perform CRUD actions for Comment", () => {
          });
        });
 
-// define a context for guest users who are signed in.
+// MEMBER CONTEXT
 
 describe("signed in user performing CRUD actions for Comment", () => {
 
@@ -202,8 +202,83 @@ describe("signed in user performing CRUD actions for Comment", () => {
           });
         })
       });
+
+      it("should not delete another user's comment", (done) => {
+        User.create({
+            email: "testmember@gmail.com",
+            password: "password"
+        })
+        .then((user) => {
+            expect(user.email).toBe("testmember.com");
+            expect(user.id).toBe(3);
+            request.get({
+                url: "http://localhost:3000/auth/fake",
+                form: {
+                    role: "member",
+                    userId: user.id
+                }
+            }, (err, res, body) => {
+                done();
+            });
+            Comment.all()
+            .then((comments) => {
+                const commentCountBeforeDelete = comments.length;
+                expect(commentCountBeforeDelete).toBe(1);
+                request.post(
+                    `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
+                        (err, res, body) => {
+                            Comment.all() 
+                            .then((comments) => {
+                                expect(err).toBeNull();
+                                expect(comments.length).toBe(commentCountBeforeDelete);
+                                done();
+                            })
+                          });
+                        });
+                      });
+                   })
+                  });
+                }); 
+
+  /**ADMIN CONTEXT */
+
+  describe("admin performing CRUD actions for Comment", () => {
+
+    beforeEach((done) => {    // before each suite in this context
+      request.get({           // mock authentication
+        url: "http://localhost:3000/auth/fake",
+        form: {
+          role: "admin",     // mock authenticate as member user
+          userId: this.user.id
+        }
+      },
+        (err, res, body) => {
+          done();
+        });
     });
-  }); 
 
-});
+    describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
+      it("should delete the comment with the associated ID", (done) => {
+        Comment.all()
+        .then((comments) => {
+          const commentCountBeforeDelete = comments.length;
+          expect(commentCountBeforeDelete).toBe(1);
+          request.post(
+            `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
+            (err, res, body) => {
+            expect(res.statusCode).toBe(302);
+            Comment.all()
+            .then((comments) => {
+              expect(err).toBeNull();
+              expect(comments.length).toBe(commentCountBeforeDelete - 1);
+              done();
+            })
+          });
+        })
+       });
+    });
+  });
+//END Admin context
 
+
+})

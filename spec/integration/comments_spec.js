@@ -209,8 +209,8 @@ describe("signed in user performing CRUD actions for Comment", () => {
             password: "password"
         })
         .then((user) => {
-            expect(user.email).toBe("testmember.com");
-            expect(user.id).toBe(3);
+            expect(user.email).toBe("testmember@gmail.com");
+            expect(user.id).toBe(2);
             request.get({
                 url: "http://localhost:3000/auth/fake",
                 form: {

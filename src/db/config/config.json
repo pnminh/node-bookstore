@@ -1,21 +1,13 @@
 {
   "development": {
-    "username": "postgres",
-    "password": null,
     "database": "bloccit-dev",
-    "host": "127.0.0.1",
-    "dialect": "postgres",
-    "logging": false,
-    "operatorAliases": false
+    "dialect": "sqlite",
+    "storage": "../dev.db"
   },
   "test": {
-    "username": "postgres",
-    "password": null,
     "database": "bloccit-test",
-    "host": "127.0.0.1",
-    "dialect": "postgres",
-    "logging": false,
-    "operatorAliases": false
+    "dialect": "sqlite",
+    "storage": "../test.db"
   },
   "production": {
     "username": "root",

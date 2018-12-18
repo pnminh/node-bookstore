@@ -3,9 +3,9 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/", (req, res, next) => {
-  res.send("Welcome to Bookstore");
-});
+const staticController = require("../controllers/staticController");
+
+router.get("/", staticController.index);
 
 module.exports = router;
 

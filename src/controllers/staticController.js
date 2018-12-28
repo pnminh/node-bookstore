@@ -3,7 +3,8 @@ Each function will contain a handler for a particular route.  */
 
 module.exports = {
     index(req, res, next){
-        res.render("static/index", {title: "Welcome to Bookstore"});
-    }
+        const books = require('json-loader!../../../db.json');
+        res.json(200,books);
   }
 
+}

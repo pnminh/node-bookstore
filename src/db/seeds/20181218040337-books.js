@@ -10,6 +10,7 @@ for(let i = 0 ; i < json.length ; i++){
     title: json[i].title,
     description: json[i].description,
     price: json[i].price,
+    image_url: json[i].image_url,
     authors: json[i].authors.join(', '),
     createdAt: new Date(),
     updatedAt: new Date()

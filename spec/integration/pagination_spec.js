@@ -1,6 +1,7 @@
 const request = require("request");
 const server = require("../../src/server");
-const base = "http://localhost:3000/books";
+const PORT = process.env.PORT||3000;
+const base = `http://localhost:${PORT}/books`;
 
 const sequelize = require("../../src/db/models/index").sequelize;
 const Book = require("../../src/db/models").Book;

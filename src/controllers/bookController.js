@@ -1,7 +1,6 @@
 const bookQueries = require("../db/queries.books");
 const totalHeader = 'x-total-count'
 module.exports = {
-
   index(req, res, next) {
     let page = req.query._page?+req.query._page:null; //+ to become a number
     let limit = req.query._limit?+req.query._limit:null;

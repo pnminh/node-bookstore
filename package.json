@@ -4,7 +4,7 @@
   "description": "Create a Bookstore that users can search books and buy their favorite books",
   "main": "src/server.js",
   "scripts": {
-    "test": "set NODE_ENV=test && jasmine",
+    "test": "set NODE_ENV=test&&jasmine",
     "start": "node src/server.js",
     "start-local": "nodemon src/server.js"
   },
@@ -12,7 +12,7 @@
   "license": "ISC",
   "devDependencies": {
     "faker": "^4.1.0",
-    "jasmine": "^3.0.0",
+    "jasmine": "^3.3.1",
     "json-loader": "^0.5.7",
     "nodemon": "^1.18.9",
     "request": "^2.83.0"

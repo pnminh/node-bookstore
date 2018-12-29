@@ -3,10 +3,10 @@
 module.exports = {
     init(app){
       const staticRoutes = require("../routes/static");
-      const topicRoutes = require("../routes/books");
+      const bookRoutes = require("../routes/books");
 
       app.use(staticRoutes);
-      app.use(topicRoutes);
+      app.use(bookRoutes);
       
     }
 

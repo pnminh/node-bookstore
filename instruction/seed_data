@@ -1,0 +1,36 @@
+createdb -U postgres -w bookstore-dev
+createdb -U postgres -w bookstore-test
+put json data to db by using seed
+-create books model:
+sequelize model:create --name Book --attributes title:text,description:text,authors:text,price:integer
+
+- create a seed file: sequelize seed:create --name books. This will generate the file at src/db/seeds named [TIMESTAMP]-books.js. 
+Open it and edit:
+- run `sequelize db:seed:all` to see data
+
+-heroku : heroku config:set megasecret="but there are plenty of forks"
+
+-import json file and make it become js file: 
+    * install json-loader:
+    * const json = require('json-loader!../../../db.json');
+    
+-load data from db
+
+-writing test for search and pagination: reference links:
+    http://technobytz.com/limit-offset-order-by-and-pagination-in-postgresql.html
+    (LIMIT , OFFSET & ORDER BY for Pagination)
+    https://stackoverflow.com/questions/51445651/how-to-use-ilike-operator-with-sequelize-to-make-case-insensitive-queries
+    https://stackoverflow.com/questions/41728023/sequelize-case-insensitive-like
+    (sequelize case insensitive like)
+
+    sequelize db:migrate:undo:all && sequelize db:migrate:undo:all 
+ sequelize db:migrate && sequelize db:migrate --env development
+
+
+sequelize db:seed:all
+db:seed --seed [file_name]
+
+on heroku:
+heroku run sequelize db:migrate
+heroku run sequelize db:seed:all
+

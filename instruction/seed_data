@@ -8,7 +8,7 @@ sequelize model:create --name Book --attributes title:text,description:text,auth
 Open it and edit:
 - run `sequelize db:seed:all` to see data
 
--heroku : heroku config:set megasecret="but there are plenty of forks"
+-heroku : heroku config:set megasecret="abc..."
 
 -import json file and make it become js file: 
     * install json-loader:

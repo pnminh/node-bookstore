@@ -1,6 +1,6 @@
 const request = require("request");
 const server = require("../../src/server");
-const base = "http://localhost:3000/";
+const base = "http://localhost:3004/"; //correct port 3000 to 3004 to make the test pass
 
 
 describe("routes: static", ()=> {

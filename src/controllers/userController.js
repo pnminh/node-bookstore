@@ -1,6 +1,6 @@
 const userQueries = require("../db/queries.users.js");
 const passport = require("passport");
-
+const sequelize = require('sequelize')
 module.exports = {
 
 
@@ -12,7 +12,12 @@ module.exports = {
     };
     userQueries.createUser(newUser, (err, user) => {
       if (err) {
-        res.status(500).json({ "error": err.errors[0].message})
+        //validation error from sequelize: uniqueness violated, null, etc.
+        if (err.errors[0] instanceof sequelize.ValidationErrorItem) {
+          res.status(400).json({ "error": err.errors[0].message })
+        } else {
+          res.status(500).json({ "error": err.errors[0].message })
+        }
       } else {
         passport.authenticate("local")(req, res, () => {
           res.json(user);
@@ -20,19 +25,21 @@ module.exports = {
       }
     });
   },
-  currentUser(req,res,next){
-    res.status(200).json({user:{email:req.user.email,id:req.user.id}});
+
+  currentUser(req, res, next) {
+    res.status(200).json({ user: { email: req.user.email, id: req.user.id } });
   },
+  
   signIn(req, res, next) {
     passport.authenticate("local")(req, res, function () {
       if (!req.user) {
         /* req.flash("notice", "Sign in failed. Please try again.")
         res.redirect("/users/sign_in"); */
-        res.status(401).json({error:"Sign in failed. Please try again."});
+        res.status(401).json({ error: "Sign in failed. Please try again." });
       } else {
         /* req.flash("notice", "You've successfully signed in!");
         res.redirect("/"); */
-        res.status(200).json({user:{email:req.user.email,id:req.user.id}})
+        res.status(200).json({ user: { email: req.user.email, id: req.user.id } })
       }
     })
   },
@@ -41,7 +48,7 @@ module.exports = {
     req.logout();
     /* req.flash("notice", "You've successfully signed out!");
     res.redirect("/"); */
-    res.status(200).json({message: "You've successfully signed out!"})
+    res.status(200).json({ message: "You've successfully signed out!" })
   },
 
 

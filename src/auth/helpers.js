@@ -4,8 +4,7 @@ module.exports = {
 // #1
   ensureAuthenticated(req, res, next) {
     if (!req.user){
-      req.flash("notice", "You must be signed in to do that.")
-      //return res.redirect("/users/sign_in");
+      return res.status(401).json({ error: "You must be signed in to do that." });
     } else {
       next();
     }

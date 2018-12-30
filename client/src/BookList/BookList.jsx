@@ -1,41 +1,9 @@
-import React, { Component } from 'react';
-import * as axios from 'axios';
-import ReactPaginate from 'react-paginate';
 import './BookList.css';
-const url = '/api/books';
+
+import React, { Component } from 'react';
+import ReactPaginate from 'react-paginate';
 
 export class BookList extends Component {
-  constructor() {
-    super();
-    this.state = {
-      listView: true,
-      books: [],
-      pagination: { count: 10, page: 1, total: null },
-      searchTerm: ''
-    };
-    this.loadBooks();
-  }
-  loadBooks() {
-    console.log(this.state.pagination);
-    let params = `?_page=${this.state.pagination.page}&_limit=${
-      this.state.pagination.count
-    }`;
-    if (this.state.searchTerm) {
-      params += `&title_like=${this.state.searchTerm}`;
-    }
-    axios.get(url + params).then(response => {
-      this.setState({
-        books: response.data,
-        pagination: {
-          ...this.state.pagination,
-          total: +response.headers['x-total-count']
-        }
-      });
-    });
-  }
-  listView = () => {
-    this.setState({ listView: true });
-  };
   getFirst100Words = words => {
     let wordTokens = words.split(' ');
     if (wordTokens.length > 50) {
@@ -43,24 +11,14 @@ export class BookList extends Component {
     }
     return words;
   };
-  gridView = () => {
-    this.setState({ listView: false });
-  };
-  handlePageClick = data => {
-    this.setState(
-      { pagination: { ...this.state.pagination, page: data.selected + 1 } },
-      this.loadBooks
-    );
-  };
-  handleSearchInput = event => {
-    this.setState({ searchTerm: event.target.value,pagination:{...this.state.pagination,page:1} }, this.loadBooks);
-  };
   render() {
-    let renderedBookList = this.state.books.map((book, id) => {
+    let renderedBookList = this.props.booksProp.books.map((book, id) => {
       return (
         <div
           className={`item col-xs-4 col-lg-4 ${
-            this.state.listView ? 'list-group-item' : 'grid-group-item'
+            this.props.booksProp.listView
+              ? 'list-group-item'
+              : 'grid-group-item'
           }`}
           key={id}
         >
@@ -89,7 +47,9 @@ export class BookList extends Component {
             <div className="caption card-body">
               <div className="row justify-content-start">
                 <div
-                  className={`${this.state.listView ? 'col-lg-2' : 'col-sm-5'}`}
+                  className={`${
+                    this.props.booksProp.listView ? 'col-lg-2' : 'col-sm-5'
+                  }`}
                 >
                   <button
                     className="btn btn-lg btn-outline-primary bg-color fs-it-btn text-uppercase"
@@ -99,7 +59,9 @@ export class BookList extends Component {
                   </button>
                 </div>
                 <div
-                  className={`${this.state.listView ? 'col-lg-2' : 'col-sm-6'}`}
+                  className={`${
+                    this.props.booksProp.listView ? 'col-lg-2' : 'col-sm-6'
+                  }`}
                 >
                   <button
                     className="btn btn-lg btn-outline-secondary bg-color fs-it-btn text-uppercase"
@@ -130,14 +92,14 @@ export class BookList extends Component {
                   <button
                     className="btn btn-info"
                     id="list"
-                    onClick={this.listView}
+                    onClick={this.props.listView}
                   >
                     List View
                   </button>
                   <button
                     className="btn btn-danger"
                     id="grid"
-                    onClick={this.gridView}
+                    onClick={this.props.gridView}
                   >
                     Grid View
                   </button>
@@ -160,22 +122,23 @@ export class BookList extends Component {
                 previousLinkClassName="page-link"
                 nextLinkClassName="page-link"
                 pageCount={
-                  this.state.pagination.total / this.state.pagination.count
+                  this.props.booksProp.pagination.total /
+                  this.props.booksProp.pagination.count
                 }
-                initialPage={this.state.pagination.page - 1}
-                forcePage={this.state.pagination.page - 1}
+                initialPage={this.props.booksProp.pagination.page - 1}
+                forcePage={this.props.booksProp.pagination.page - 1}
                 pageRangeDisplayed={3}
                 marginPagesDisplayed={1}
-                onPageChange={this.handlePageClick}
+                onPageChange={this.props.handlePageClick}
               />
             </div>
             <div className="input-group col-md-3">
               <input
                 className="form-control"
                 type="search"
-                value={this.state.searchTerm}
+                value={this.props.booksProp.searchTerm}
                 id="example-search-input"
-                onChange={this.handleSearchInput}
+                onChange={this.props.handleSearchInput}
               />
               <span className="input-group-append">
                 <button className="btn btn-outline-secondary" type="button">

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { BrowserRouter as Link } from 'react-router-dom';
 export class Main extends Component {
   render() {
     return (
@@ -9,7 +9,7 @@ export class Main extends Component {
           <header className="jumbotron my-4">
             <h1 className="display-3">Welcome to Bloccit</h1>
             <p className="lead">An application for users to share information.</p>
-            <a href="#" className="btn btn-primary btn-lg">
+            <a href="/sign_up" className="btn btn-primary btn-lg">
               Sign up
             </a>
           </header>

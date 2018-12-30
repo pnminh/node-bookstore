@@ -5,6 +5,8 @@ import { About } from '../About/About';
 import { BookList } from '../BookList/BookList';
 import { History } from '../History/History';
 import { Admin } from '../Admin/Admin';
+import { SignIn } from '../Users/SignIn';
+import { SignUp } from '../Users/SignUp';
 export class NavBar extends Component {
   render() {
     return (
@@ -35,6 +37,18 @@ export class NavBar extends Component {
                     <span className="sr-only">(current)</span>
                   </li>
                   <li className="nav-item">
+                    <Link className="nav-link" to="/sign_in">
+                      Sign in
+                    </Link>
+                    <span className="sr-only">(current)</span>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/sign_up">
+                      Sign up
+                    </Link>
+                    <span className="sr-only">(current)</span>
+                  </li>
+                  <li className="nav-item">
                     <Link className="nav-link" to="/books">
                       Books
                     </Link>
@@ -48,7 +62,7 @@ export class NavBar extends Component {
                   </li>
                   <li className="nav-item">
                     <Link className="nav-link" to="/admin">
-                     Admin
+                      Admin
                     </Link>
                     <span className="sr-only">(current)</span>
                   </li>
@@ -63,6 +77,8 @@ export class NavBar extends Component {
             </div>
           </nav>
           <Route exact path="/" component={Main} />
+          <Route exact path="/sign_in" component={SignIn} />
+          <Route exact path="/sign_up" component={SignUp} />
           <Route path="/about" component={About} />
           <Route path="/books" component={BookList} />
           <Route path="/admin" component={Admin} />

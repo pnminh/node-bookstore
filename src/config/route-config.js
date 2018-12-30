@@ -4,10 +4,8 @@ module.exports = {
     init(app){
      
       const bookRoutes = require("../routes/books");
-      const userRoutes = require("../routes/users");
-    
-      app.use(bookRoutes);
-      app.use(userRoutes);
+      const userRoutes = require("../routes/users"); 
+      app.use('/api',bookRoutes,userRoutes);
     }
 
     

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import './BookList.css';
-const url = '/books';
+const url = '/api/books';
 
 export class BookList extends Component {
   constructor() {

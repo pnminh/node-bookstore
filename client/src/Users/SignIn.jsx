@@ -1,44 +1,59 @@
 import React, { Component } from 'react';
-
+import Formsy from 'formsy-react';
+import FormInput from '../Components/FormInput';
+import { Redirect } from 'react-router-dom';
 export class SignIn extends Component {
+  constructor() {
+    super();
+    this.state = { canSubmit: false };
+  }
+  enableButton = () => {
+    this.setState({ canSubmit: true });
+  };
+
+  disableButton = () => {
+    this.setState({ canSubmit: false });
+  };
   render() {
+    if (this.props.users.id) {
+      return <Redirect to='/books' />;
+    }
     return (
       <div className="container">
         <h1>Sign in</h1>
-
-        <form action="/users/sign_in" method="post">
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              className="form-control"
-              name="email"
-              aria-describedby="emailHelp"
-              placeholder="Enter email"
-            />
-            <small className="text-muted" id="emailHelp">
-              email address must be a valid address
-            </small>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              className="form-control"
-              name="password"
-              aria-describedby="passwordHelp"
-              placeholder="Enter password"
-            />
-            <small className="text-muted" id="passwordHelp">
-              password must match confirmation below
-            </small>
-          </div>
-
-          <button type="submit" className="btn btn-primary">
+        <Formsy
+          onSubmit={data => this.props.signIn(data)}
+          onValid={this.enableButton}
+          onInvalid={this.disableButton}
+        >
+          <FormInput
+            type="email"
+            name="email"
+            aria-describedby="emailHelp"
+            placeholder="Enter email"
+            title="Email"
+            validations="isEmail"
+            validationError="Email must be valid"
+            describedByText="email address must be a valid address"
+            required
+          />
+          <FormInput
+            type="password"
+            name="password"
+            placeholder="Enter password"
+            title="Password"
+            validations="minLength:6"
+            validationError="Password must be longer than 6 characters"
+            required
+          />
+          <button
+            type="submit"
+            disabled={!this.state.canSubmit}
+            className="btn btn-primary"
+          >
             Sign in
           </button>
-        </form>
+        </Formsy>
       </div>
     );
   }

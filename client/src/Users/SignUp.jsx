@@ -1,28 +1,29 @@
 import React, { Component } from 'react';
 import Formsy from 'formsy-react';
 import FormInput from '../Components/FormInput';
+import { Redirect } from 'react-router-dom';
 export class SignUp extends Component {
   constructor() {
     super();
     this.state = { canSubmit: false };
   }
-  submit = data => {
-    console.log(JSON.stringify(data));
-  };
-  enableButton = ()=> {
+  enableButton = () => {
     this.setState({ canSubmit: true });
-  }
+  };
 
-  disableButton = ()=> {
+  disableButton = () => {
     this.setState({ canSubmit: false });
-  }
+  };
   render() {
+    // checkout: https://reacttraining.com/react-router/web/example/auth-workflow
+    if (this.props.users.id) {
+        return <Redirect to='/books' />;
+    }
     return (
       <div className="container">
         <h1>Sign up</h1>
-
         <Formsy
-          onSubmit={this.submit}
+          onSubmit={data => this.props.signUp(data)}
           onValid={this.enableButton}
           onInvalid={this.disableButton}
         >
@@ -54,13 +55,13 @@ export class SignUp extends Component {
             placeholder="Enter password confirmation"
             title="Password confirmation"
             validations={{
-                minLength: 6,
-                equalsField: 'password'
-              }}
-              validationErrors={{
-                minLength: 'Password must be longer than 6 characters',
-                equalsField: 'Confirmed password does not match'
-              }}
+              minLength: 6,
+              equalsField: 'password'
+            }}
+            validationErrors={{
+              minLength: 'Password must be longer than 6 characters',
+              equalsField: 'Confirmed password does not match'
+            }}
             required
           />
           <button
